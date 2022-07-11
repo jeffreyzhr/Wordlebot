@@ -1,11 +1,15 @@
 '''
-//todo: account for capital letters 
-//todo: account for error cases in input
-
+//todo: 
 '''
 
 guess1 = input("\nHey! This is WordleBot! What's your first guess? \nGuess: ")
+if len(guess1) != 5:
+    print("ERROR: Words must be 5 letters long\n")
+    exit()
 outcome1 = input("\nWhat is the outcome? Input the colours you see! \n[ G for Green, B for black, Y for yellow ]\nInput: ")
+if len(outcome1) != 5:
+    print("ERROR: Outcome must be 5 letters long\n")
+    exit()
 
 
 class Gamestate:
@@ -13,7 +17,7 @@ class Gamestate:
     def __init__(self):
         words = open(r"5lwords.txt", "r")
         self.allwords = words.readlines()
-        
+      
     def update(self, guess, outcome, allwords):
         currword = [char for char in guess]
         curroutcome = [char for char in outcome]
@@ -54,6 +58,6 @@ class Gamestate:
 
 
 game = Gamestate()   
-game.update(guess1, outcome1, game.allwords)
+game.update(guess1.lower(), outcome1.upper(), game.allwords)
 game.printer()
         
