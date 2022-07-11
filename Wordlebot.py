@@ -13,51 +13,63 @@ if len(outcome1) != 5:
 
 
 class Gamestate:
-    allwords = []
+    pastwords = []
+    truecount, falsecount = 0, 0
+    
     def __init__(self):
         words = open(r"5lwords.txt", "r")
         self.allwords = words.readlines()
       
-    def update(self, guess, outcome, allwords):
-        currword = [char for char in guess]
+    def updatewordlist(self, guess, outcome, allwords):
+        Gamestate.pastwords.append(guess)
+        guessword = [char for char in guess]
         curroutcome = [char for char in outcome]
         updatedwords = []
-        include = True
         for word in allwords:
+            include = True
             iword = [char for char in word]
             for i in range(5):
                 if curroutcome[i] == 'G':
-                    self.green()
+                    if self.green(guessword[i], iword[i]) == False:
+                        Gamestate.falsecount += 1
+                        include = False
+                        break
                 elif curroutcome[i] == 'B':
-                    self.black()
+                    #include = self.black(guessword[i], iword[i])
+                    pass
                 elif curroutcome[i] == 'Y':
-                    self.yellow()
+                    #include = self.yellow(guessword[i], iword[i])
                     pass
             
             if include:
-                updatedwords.append(word)
+                updatedwords.append(word.strip())
+                
         
         self.allwords = updatedwords
     
-    def green():
-        return
+    def green(self, guesschar, ichar):
+        if guesschar != ichar:
+            return False
     
-    def yellow():
-        return
+    def yellow(self, guesschar, ichar):
+        return False
     
-    def black():
-        return
+    def black(self, guesschar, ichar):
+        return False
     
     def evaluate():
         return
     
     def printer(self):
-        print("\nThere are {} possible words.".format(len(self.allwords)))
-        print("The possible words are as follows: \n{}".format(self.allwords))
+        print("\nThe possible words are as follows: \n")
+        print(*self.allwords, sep= ",")
+        print("\nThere are {} possible words.\n".format(len(self.allwords)))
+        print(Gamestate.truecount)
+        print(Gamestate.falsecount)
     
 
 
 game = Gamestate()   
-game.update(guess1.lower(), outcome1.upper(), game.allwords)
+game.updatewordlist(guess1.lower(), outcome1.upper(), game.allwords)
 game.printer()
         
