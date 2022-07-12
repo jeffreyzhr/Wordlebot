@@ -2,6 +2,9 @@
 //todo: 
 '''
 
+from operator import index
+
+
 guess1 = input("\nHey! This is WordleBot! What's your first guess? \nGuess: ")
 if len(guess1) != 5:
     print("ERROR: Words must be 5 letters long\n")
@@ -21,17 +24,23 @@ class Gamestate:
         words = open(r"5lwords.txt", "r")
         self.allwords = words.readlines()
       
-    def updatewordlist(self, guess, outcome, allwords):
+    def update(self, guess, outcome, allwords):
         Gamestate.pastwords.append(guess)
         guessword = [char for char in guess]
         curroutcome = [char for char in outcome]
-        updatedwords = []
+        updatedwordlist = []
+        #repeatedletters = [[i] for i in guessword if guessword.count(i) != 1]
+        #repeatedletters = self.repeat_helper(guessword, curroutcome)
+
+        #print(repeatedletters)
+        print("guesssord: {}".format(guessword))
+        
         for word in allwords:
             include = True
             iword = [char for char in word]
             for i in range(5):
                 if curroutcome[i] == 'G':
-                    Gamestate.greenletters.append(guessword[i])
+                    #Gamestate.greenletters.append(guessword[i])
                     if self.green(guessword[i], iword[i]) == False:
                         Gamestate.falsecount += 1
                         include = False
@@ -45,11 +54,20 @@ class Gamestate:
                     break
             
             if include:
-                updatedwords.append(word.strip())
+                updatedwordlist.append(word.strip())
                 
         
-        self.allwords = updatedwords
+        self.allwords = updatedwordlist
     
+        
+    def repeat_helper(self, guessword, curroutcome):
+        wordarray = guessword.copy()
+        print(wordarray)
+        lst = [[i] for i in wordarray if guessword.count(i) != 1]
+        for i in range(5):
+            if wordarray[i] == lst[0]:
+                print("lst: {}".format(lst[0]))
+        return lst
     def green(self, guesschar, ichar):
         if guesschar != ichar:
             return False
@@ -66,16 +84,19 @@ class Gamestate:
         return
     
     def printer(self):
-        print("\nThe possible words are as follows: \n")
+        attempt_count = ['1st', '2nd', '3rd', '4th', '5th', '6th']
+        print("\n" + "="*70)
+        print("The possible words are as follows: \n")
         print(*self.allwords, sep= " ")
-        print("\nThere are {} possible words after {} guess.\n".format(len(self.allwords), len(Gamestate.pastwords)))
+        print("\nThere are {} possible words after the {} guess.".format(len(self.allwords), attempt_count[len(Gamestate.pastwords) - 1]))
+        print("="*70 + "\n")
         print(Gamestate.truecount)
         print(Gamestate.falsecount)
     
 
 
 game = Gamestate()   
-game.updatewordlist(guess1.lower(), outcome1.upper(), game.allwords)
+game.update(guess1.lower(), outcome1.upper(), game.allwords)
 game.printer()
 
 """
