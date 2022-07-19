@@ -80,6 +80,7 @@ class Gamestate:
         print(*Gamestate.pastwords, sep= ", ")
         print("")
         print("Starting with 5757 words, you've narrowed it down to {} words in {} guesses".format(len(self.allwords), len(Gamestate.pastwords)))
+        print("coming soon: more stats!")
         print("\n" + "="*75)
         exit()
     
