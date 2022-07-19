@@ -18,12 +18,10 @@ class Gamestate:
         
         for word in allwords:
             include = True
-                
             for y in Gamestate.yellowletters: #asserts that word must contain yellow letter, position unknown (1) - Y
                 if y not in word:
                     include = False
                     break
-            
             iword = [char for char in word]
             for i in range(5):
                 if curroutcome[i] == 'G': # letter at index i must be guess[i] - G
@@ -42,12 +40,10 @@ class Gamestate:
                         if guessword[i] in word:
                             include = False
                             break
-                
             #implement GY letters??
             
             if include:
                 updatedwordlist.append(word.strip())
-
         self.allwords = updatedwordlist
     
     def updatecolour(self, guessword, curroutcome):
@@ -132,4 +128,4 @@ game.printer(bestguess5)
 
 status6 = game.status(attempt= 'sixth')
 game.update(status6[0].lower(), status6[1].upper(), game.allwords)
-game.printstats
+game.printstats()
