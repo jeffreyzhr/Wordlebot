@@ -32,11 +32,11 @@ class Gamestate:
                     if iword[i] == guessword[i]:
                         include = False
                         break
-                elif curroutcome[i] == 'B': 
+                elif curroutcome[i] == 'B':
                     if iword[i] == guessword[i]:
                         include = False
                         break
-                    if iword[i] not in Gamestate.greenletters and iword[i] not in Gamestate.yellowletters: # - BY, BG, B
+                    if guessword[i] not in Gamestate.greenletters and iword[i] not in Gamestate.yellowletters: # - BY, BG, B
                         if guessword[i] in word:
                             include = False
                             break
@@ -52,10 +52,13 @@ class Gamestate:
                 Gamestate.greenletters.append(guessword[i])
             elif curroutcome[i] == 'Y' and guessword[i] not in Gamestate.yellowletters:
                 Gamestate.yellowletters.append(guessword[i])
+        
+        for i in Gamestate.greenletters:
+            if i in Gamestate.yellowletters:
+                Gamestate.yellowletters.remove(i) # a horrible temp soln for GY
                 
     
     def evaluate(self, allwords):
-        
         return allwords[0]
     
     def printer(self, bestguess):
@@ -129,3 +132,5 @@ game.printer(bestguess5)
 status6 = game.status(attempt= 'sixth')
 game.update(status6[0].lower(), status6[1].upper(), game.allwords)
 game.printstats()
+
+# can change the above ^ calls to a while loop for cases of different wordle configs
