@@ -47,9 +47,7 @@ class Gamestate:
             
             if include:
                 updatedwordlist.append(word.strip())
-                
-        print(Gamestate.greenletters)
-        print(Gamestate.yellowletters)
+
         self.allwords = updatedwordlist
     
     def updatecolour(self, guessword, curroutcome):
