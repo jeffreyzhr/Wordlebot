@@ -1,6 +1,8 @@
 from operator import index
+import numpy as np
 
 class Gamestate:
+    alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
     pastwords = []
     greenletters = []
     yellowletters = []
@@ -58,7 +60,31 @@ class Gamestate:
                 
     
     def evaluate(self, allwords):
-        return allwords[0]
+        scorearray = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+        wordscore = []
+        for word in allwords:
+            curr = [char for char in word]
+            for num in range(5):
+                self.eval_helper(scorearray[num], curr[num])
+        
+        for word in allwords:
+            index = [Gamestate.alphabet.index(char) for char in word]
+            indiv_score = 0
+            for i in range(5):
+                indiv_score += scorearray[i][index[i]]
+            wordscore.append(indiv_score)
+        
+        max_score = np.argmax(wordscore)
+        
+        return allwords[max_score]
+    
+    def eval_helper(self, indivarray, char):
+        for i in range(26):
+            if char == Gamestate.alphabet[i]:
+                indivarray[i] += 1
+                    
     
     def printer(self, bestguess):
         attempt_count = ['1st', '2nd', '3rd', '4th', '5th', '6th']
