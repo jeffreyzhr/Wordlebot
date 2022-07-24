@@ -35,8 +35,7 @@ class Gamestate:
                 elif curroutcome[i] == 'B':
                     if iword[i] == guessword[i]:
                         include = False
-                        break
-                    if guessword[i] not in Gamestate.greenletters and iword[i] not in Gamestate.yellowletters: # - BY, BG, B
+                    if guessword[i] not in Gamestate.greenletters and guessword[i] not in Gamestate.yellowletters: # - BY, BG, B
                         if guessword[i] in word:
                             include = False
                             break
